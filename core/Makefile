@@ -166,12 +166,12 @@ $(INSTALLED_DEFAULT_PROP_TARGET): $(intermediate_system_build_prop)
 	@mkdir -p $(dir $@)
 	@rm -f $@
 	$(hide) echo "#" > $@; \
-	        echo "# ADDITIONAL_DEFAULT_PROPERTIES" >> $@; \
+	        echo "# Additional Default Properties" >> $@; \
 	        echo "#" >> $@;
 	$(hide) $(foreach line,$(FINAL_DEFAULT_PROPERTIES), \
 		echo "$(line)" >> $@;)
 	$(hide) echo "#" >> $@; \
-	        echo "# BOOTIMAGE_BUILD_PROPERTIES" >> $@; \
+	        echo "# Bootimage Build Properties" >> $@; \
 	        echo "#" >> $@;
 	$(hide) echo ro.bootimage.build.date=`$(DATE_FROM_FILE)`>>$@
 	$(hide) echo ro.bootimage.build.date.utc=`$(DATE_FROM_FILE) +%s`>>$@
@@ -314,11 +314,14 @@ $(intermediate_system_build_prop): $(BUILDINFO_SH) $(INTERNAL_BUILD_ID_MAKEFILE)
 	$(hide) echo > $@
 ifneq ($(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_OEM_PROPERTIES),)
 	$(hide) echo "#" >> $@; \
-	        echo "# PRODUCT_OEM_PROPERTIES" >> $@; \
+	        echo "# Product Oem Properties" >> $@; \
 	        echo "#" >> $@;
 	$(hide) $(foreach prop,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_OEM_PROPERTIES), \
 		echo "import /oem/oem.prop $(prop)" >> $@;)
+	$(hide) echo "#" >> $@;
 endif
+	$(hide) echo "# Build Properties" >> $@; \
+		echo "#" >> $@;	
 	$(hide) TARGET_BUILD_TYPE="$(TARGET_BUILD_VARIANT)" \
 			TARGET_BUILD_FLAVOR="$(TARGET_BUILD_FLAVOR)" \
 			TARGET_DEVICE="$(TARGET_DEVICE)" \
@@ -357,16 +360,12 @@ endif
 	        bash $(BUILDINFO_SH) >> $@
 	$(hide) $(foreach file,$(system_prop_file), \
 		if [ -f "$(file)" ]; then \
-			echo "#" >> $@; \
 			echo Target buildinfo from: "$(file)"; \
-			echo "# from $(file)" >> $@; \
-			echo "#" >> $@; \
 			cat $(file) >> $@; \
 		fi;)
 	$(if $(FINAL_BUILD_PROPERTIES), \
-		$(hide) echo >> $@; \
-		        echo "#" >> $@; \
-		        echo "# ADDITIONAL_BUILD_PROPERTIES" >> $@; \
+		$(hide) echo "#" >> $@; \
+		        echo "# Additional Build Properties" >> $@; \
 		        echo "#" >> $@; )
 	$(hide) $(foreach line,$(FINAL_BUILD_PROPERTIES), \
 		echo "$(line)" >> $@;)
@@ -407,7 +406,7 @@ $(INSTALLED_VENDOR_BUILD_PROP_TARGET): $(VENDOR_BUILDINFO_SH) $(intermediate_sys
 	@mkdir -p $(dir $@)
 	$(hide) echo > $@
 	$(hide) grep 'ro.product.first_api_level' $(intermediate_system_build_prop) >> $@ || true
-	$(hide) echo ro.vendor.build.date=`$(DATE_FROM_FILE)`>>$@
+	$(hide) echo ro.vendor.build.date=`$(DATE_FROM_FILE)`>$@
 	$(hide) echo ro.vendor.build.date.utc=`$(DATE_FROM_FILE) +%s`>>$@
 	$(hide) echo ro.vendor.build.fingerprint="$(BUILD_FINGERPRINT_FROM_FILE)">>$@
 	$(hide) echo ro.vendor.build.security_patch="$(VENDOR_SECURITY_PATCH)">>$@
