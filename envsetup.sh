@@ -1640,9 +1640,9 @@ function _wrap_build()
         color_success=""
         color_reset=""
     fi
-    echo
+
     if [ $ret -eq 0 ] ; then
-        echo -n "${color_success}#### build completed successfully "
+        echo -n "${color_success}Build completed successfully "
     else
         echo -n "${color_failed}#### FAILED to build some targets "
     fi
@@ -1653,7 +1653,7 @@ function _wrap_build()
     elif [ $secs -gt 0 ] ; then
         printf "(%s seconds)" $secs
     fi
-    echo " ####${color_reset}"
+    echo " ${color_reset}"
     echo
     return $ret
 }

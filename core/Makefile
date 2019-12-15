@@ -311,10 +311,9 @@ endif
 $(intermediate_system_build_prop): $(BUILDINFO_SH) $(INTERNAL_BUILD_ID_MAKEFILE) $(BUILD_SYSTEM)/version_defaults.mk $(system_prop_file) $(INSTALLED_ANDROID_INFO_TXT_TARGET)
 	@echo Target buildinfo: $@
 	@mkdir -p $(dir $@)
-	$(hide) echo > $@
+	$(hide) echo "#" > $@
 ifneq ($(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_OEM_PROPERTIES),)
-	$(hide) echo "#" >> $@; \
-	        echo "# Product Oem Properties" >> $@; \
+	$(hide) echo "# Product Oem Properties" >> $@; \
 	        echo "#" >> $@;
 	$(hide) $(foreach prop,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_OEM_PROPERTIES), \
 		echo "import /oem/oem.prop $(prop)" >> $@;)
@@ -3233,9 +3232,9 @@ otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(ARROW_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(ARROW_TARGET_PACKAGE) > $(ARROW_TARGET_PACKAGE).md5sum
-	@echo ""
-	@echo "**Build complete"**: $(ARROW_TARGET_PACKAGE)"
-	@echo ""
+	@echo " "
+	@echo "Target file: $(ARROW_TARGET_PACKAGE)"
+	@echo " "
 
 endif    # build_ota_package
 
