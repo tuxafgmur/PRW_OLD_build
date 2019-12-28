@@ -405,7 +405,10 @@ $(INSTALLED_VENDOR_BUILD_PROP_TARGET): $(VENDOR_BUILDINFO_SH) $(intermediate_sys
 	@mkdir -p $(dir $@)
 	$(hide) echo > $@
 	$(hide) grep 'ro.product.first_api_level' $(intermediate_system_build_prop) >> $@ || true
-	$(hide) echo ro.vendor.build.date=`$(DATE_FROM_FILE)`>$@
+	$(hide) echo "#" > $@; \
+	        echo "# Vendor Build Properties" >> $@; \
+	        echo "#" >> $@;
+	$(hide) echo ro.vendor.build.date=`$(DATE_FROM_FILE)`>>$@
 	$(hide) echo ro.vendor.build.date.utc=`$(DATE_FROM_FILE) +%s`>>$@
 	$(hide) echo ro.vendor.build.fingerprint="$(BUILD_FINGERPRINT_FROM_FILE)">>$@
 	$(hide) echo ro.vendor.build.security_patch="$(VENDOR_SECURITY_PATCH)">>$@
@@ -428,7 +431,7 @@ $(INSTALLED_VENDOR_BUILD_PROP_TARGET): $(VENDOR_BUILDINFO_SH) $(intermediate_sys
 	        bash $(VENDOR_BUILDINFO_SH) >> $@
 ifdef property_overrides_split_enabled
 	$(hide) echo "#" >> $@; \
-	        echo "# ADDITIONAL VENDOR BUILD PROPERTIES" >> $@; \
+	        echo "# Additional Vendor Build Properties" >> $@; \
 	        echo "#" >> $@;
 	$(hide) $(foreach line,$(FINAL_VENDOR_BUILD_PROPERTIES), \
 		echo "$(line)" >> $@;)
